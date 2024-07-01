@@ -5,12 +5,14 @@ import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { Link } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
 import { auth } from "../../firebase";
+import mixpanel from 'mixpanel-browser';
 
 function Header() {
   const [{ basket, user }, dispatch] = useStateValue();
 
   const handleAuthentication = () => {
     if (user) {
+      mixpanel.track('Sign Out Clicked', { user: user.email });
       auth.signOut();
     }
   };

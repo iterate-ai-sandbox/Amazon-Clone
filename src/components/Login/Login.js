@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
 import "./Login.css";
+import mixpanel from 'mixpanel-browser';
 
 function Login() {
   const history = useHistory();
@@ -10,28 +11,36 @@ function Login() {
 
   const signIn = (e) => {
     e.preventDefault();
+    mixpanel.track('Sign In Attempted', { email });
 
     auth
       .signInWithEmailAndPassword(email, password)
       .then((auth) => {
+        mixpanel.track('Sign In Successful', { email });
         history.push("/");
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => {
+        mixpanel.track('Sign In Failed', { email, error: error.message });
+        alert(error.message);
+      });
   };
 
   const register = (e) => {
     e.preventDefault();
+    mixpanel.track('Register Attempted', { email });
 
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((auth) => {
-        // it successfully created a new user with email and password
-        console.log(auth);
+        mixpanel.track('Register Successful', { email });
         if (auth) {
           history.push("/");
         }
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => {
+        mixpanel.track('Register Failed', { email, error: error.message });
+        alert(error.message);
+      });
   };
 
   return (

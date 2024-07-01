@@ -5,6 +5,9 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import reducer, { initialState } from "./reducer";
 import { StateProvider } from "./StateProvider";
+import mixpanel from 'mixpanel-browser';
+
+mixpanel.init("788f7cae062865efafe7db785021c591");
 
 ReactDOM.render(
   <React.StrictMode>

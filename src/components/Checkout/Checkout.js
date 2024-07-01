@@ -3,6 +3,7 @@ import { useStateValue } from "../../StateProvider";
 import "./Checkout.css";
 import CheckoutProduct from "./CheckoutProduct";
 import Subtotal from "./Subtotal";
+import mixpanel from 'mixpanel-browser';
 
 function Checkout() {
   const [{ basket, user }, dispatch] = useStateValue();
@@ -27,6 +28,7 @@ function Checkout() {
               image={item.image}
               price={item.price}
               rating={item.rating}
+              onClick={() => mixpanel.track('Product Clicked', { productId: item.id, title: item.title })}
             />
           ))}
         </div>
